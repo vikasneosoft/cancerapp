@@ -1,0 +1,14 @@
+div#loadingImage {
+    z-index: 1052 !important;
+}
+#loadingImage {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.4);
+    z-index: 10;
+    align-content: center;
+    text-align: center;
+}

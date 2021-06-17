@@ -1,0 +1,21 @@
+/*  Payment pages */
+.errormsges{
+    color: #ff0000;
+}
+
+#loadingImage {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #0006;
+    z-index: 10;
+    align-content: center;
+    text-align: center;
+}
+
+.ui-datepicker-trigger {
+    padding: 10px;
+    position: absolute;
+}
