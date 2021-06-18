@@ -34,13 +34,17 @@
                     </address>
                 </div>
                 <div class="col-sm-3 invoice-col text-center">
-                    <b>Address</b>
+                    <b>Old Plans</b>
                     <address>
-                        @foreach ($inquiry['plans'] as $key => $value)
-                            <a href="{{ route('doctor.printPlan', ['id' => $value['id']]) }}">Plan -
-                                {{ $key + 1 }}</a>
+                        @if (isset($inquiry['plans']) && !empty($inquiry['plans']))
+                            @foreach ($inquiry['plans'] as $key => $value)
+                                <a href="{{ route('doctor.printPlan', ['id' => $value['id']]) }}">Plan -
+                                    {{ $key + 1 }}</a>
 
-                        @endforeach
+                            @endforeach
+                        @else
+                            --
+                        @endif
                     </address>
                 </div>
 
