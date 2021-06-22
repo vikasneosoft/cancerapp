@@ -24,8 +24,8 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div id="loadingImage" class="d-none">
-        <img src="{{ asset('public/images/ajax-loader.svg') }}">
+    <div id="loadingImage" style="display: none">
+        <img src="{{ asset('public/images/ajax-loader.gif') }}">
     </div>
     <div class="wrapper">
 
@@ -43,7 +43,7 @@
                         style="left: 0px; right: inherit;">
                         <li><a href="#" class="dropdown-item">Some action </a></li>
 
-                        <li><a href="{{ route('adminLogout') }}" class="dropdown-item">Logout</a></li>
+                        <li><a href="{{ route('admin_logout') }}" class="dropdown-item">Logout</a></li>
                     </ul>
                 </li>
             </ul>

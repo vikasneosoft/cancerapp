@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @section('title')
-    Add Category
+    Add Cancer Type
 @endsection
 @section('admin-css')
 
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin_dashboard') }}"> Dashboard</a></li>
                         <li class="breadcrumb-item active">Add cancer type</li>
                     </ol>
                 </div>
@@ -53,35 +53,36 @@
                 rules: {
                     name: {
                         required: true,
+                        lettersonly: true
                     },
                 },
                 messages: {
                     name: {
-                        required: "Cancer type name is required"
+                        required: "Cancer type name is required",
+                        lettersonly: "Invalid name format"
                     },
                 },
                 errorElement: 'span',
-                errorClass: 'error_msg errormsges',
+                errorClass: 'error',
                 submitHandler: function(form) {
                     $.ajax({
                         dataType: 'json',
                         method: 'post',
                         data: $('#add-form').serialize(),
-                        url: "{{ route('admin.addCancerType') }}",
+                        url: "{{ route('cancer.store') }}",
                         beforeSend: function() {
-                            $("#loadingImage").show();
+                            $("#loadingImage").css({
+                                "display": "block"
+                            });
                         },
                         success: function(data) {
-                            $("#loadingImage").hide();
-                            if (data.success == true) {
-                                window.location = "getCancerTypes";
-                            }
-                            if (data.success == false) {
-                                window.location = "getCancerTypes";
-                            }
+                            window.location.href =
+                                "{{ route('cancer.index') }}";
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
-                            $("#loadingImage").hide();
+                            $("#loadingImage").css({
+                                "display": "none"
+                            });
                             $.each(xhr.responseJSON.errors, function(i, obj) {
                                 $('input[name="' + i + '"]').closest('.form-group')
                                     .addClass('has-error');
@@ -94,7 +95,6 @@
                 }
             });
         });
-
     </script>
 
 @endsection

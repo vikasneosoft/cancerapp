@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
+                            <li class="breadcrumb-item"><a href="{{ route('admin_dashboard') }}"><i
                                         class="fa fa-dashboard"></i> Dashboard</a></li>
                             <li class="breadcrumb-item active">Cancer types</li>
                         </ol>
@@ -31,8 +31,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="{{ route('admin.viewAddCancerType') }}"
-                                        class="btn btn-block btn-primary">Add</a>
+                                    <a href="{{ route('cancer.create') }}" class="btn btn-block btn-primary">Add</a>
                                 </h3>
                             </div>
 
@@ -61,7 +60,7 @@
                                                         <tr role="row" class="{{ $key }}">
                                                             <td class="sorting_1" tabindex="0">{{ $key + 1 }}</td>
                                                             <td><a
-                                                                    href="{{ route('admin.viewEditCancerType', ['id' => $value['id']]) }}">{{ $value['name'] }}</a>
+                                                                    href="{{ route('cancer.update', $value['id']) }}">{{ $value['name'] }}</a>
                                                             </td>
                                                             <td>
                                                                 @if ($value['status'] == 1)
@@ -85,7 +84,7 @@
                                                                         </button>
                                                                         <ul class="dropdown-menu">
                                                                             <li><a class="dropdown-item"
-                                                                                    href="{{ route('admin.viewEditCancerType', ['id' => $value['id']]) }}">Edit</a>
+                                                                                    href="{{ route('cancer.update', $value['id']) }}">Edit</a>
                                                                             </li>
                                                                             <li class="divider"></li>
                                                                             <li><a class="delete dropdown-item" href="#"
@@ -119,46 +118,51 @@
             $(document).on("click", ".change-status", function() {
                 var id = $(this).attr('data-id');
                 var status = $(this).attr('data-status');
-                var token = "{{ csrf_token() }}";
                 bootbox.confirm("Are you sure you want to change the status?", function(result) {
                     if (result) {
                         $.ajax({
-                            url: '{{ route('admin.changeStatus') }}',
+                            url: '{{ route('admin.change_status') }}',
                             type: "POST",
                             data: {
                                 id: id,
-                                status: status,
-                                _token: token
+                                status: status
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
-                                $("#loadingImage").show();
+                                $("#loadingImage").css({
+                                    "display": "block"
+                                });
                             },
                             success: function(data) {
-                                $("#loadingImage").hide();
                                 location.reload();
                             },
                         });
                     }
                 });
             });
-            /** Delete Product **/
+
+            /** Delete **/
             $(document).on("click", ".delete", function() {
                 var id = $(this).attr('data-id');
-                var token = "{{ csrf_token() }}";
                 bootbox.confirm("Are you sure you want to delete?", function(result) {
                     if (result) {
                         $.ajax({
-                            url: '{{ route('admin.deleteCancerType') }}',
-                            type: "POST",
+                            url: "{{ route('cancer.destroy', '+id+') }}",
+                            type: "DELETE",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
                             data: {
                                 id: id,
-                                _token: token
                             },
                             beforeSend: function() {
-                                $("#loadingImage").show();
+                                $("#loadingImage").css({
+                                    "display": "block"
+                                });
                             },
                             success: function(data) {
-                                $("#loadingImage").hide();
                                 location.reload();
                             },
                         });
@@ -166,6 +170,5 @@
                 });
             });
         });
-
     </script>
 @endsection

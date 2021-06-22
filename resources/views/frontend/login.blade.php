@@ -33,7 +33,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('doctorAuth') }}">
+                <form method="POST" action="{{ route('doctor_auth') }}">
                     @csrf
                     <div class="input-group mb-3">
                         <input id="email" type="email" placeholder="Email"

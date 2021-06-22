@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin_dashboard') }}"> Dashboard</a></li>
                         <li class="breadcrumb-item active">Edit Event</li>
                     </ol>
                 </div>
@@ -56,6 +56,7 @@
                 rules: {
                     name: {
                         required: true,
+                        lettersonly: true
                     },
                     email: {
                         required: true,
@@ -68,6 +69,7 @@
                 messages: {
                     name: {
                         required: "Doctor name is required.",
+                        lettersonly: "Invalid name format"
                     },
                     email: {
                         required: "Doctor email is required",
@@ -78,27 +80,35 @@
                     }
                 },
                 errorElement: 'span',
-                errorClass: 'error_msg errormsges',
+                errorClass: 'error',
                 submitHandler: function(form) {
                     $.ajax({
                         dataType: 'json',
-                        method: 'post',
+                        method: 'PUT',
                         data: $('#edit-form').serialize(),
-                        url: "{{ route('admin.editDoctor') }}",
+                        url: "{{ route('doctors.update', '+id+') }}",
                         beforeSend: function() {
-                            $("#loadingImage").show();
+                            $("#loadingImage").css({
+                                "display": "block"
+                            });
                         },
                         success: function(data) {
-                            $("#loadingImage").hide();
                             window.location.href =
-                                "{{ route('admin.getDoctors') }}";
+                                "{{ route('doctors.index') }}";
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
-                            $("#loadingImage").hide();
+                            $("#loadingImage").css({
+                                "display": "none"
+                            });
                             $.each(xhr.responseJSON.errors, function(i, obj) {
                                 $('input[name="' + i + '"]').closest('.form-group')
                                     .addClass('has-error');
                                 $('input[name="' + i + '"]').closest('.form-group')
+                                    .find('label.help-block').slideDown(400).html(
+                                        obj);
+                                $('select[name="' + i + '"]').closest('.form-group')
+                                    .addClass('has-error');
+                                $('select[name="' + i + '"]').closest('.form-group')
                                     .find('label.help-block').slideDown(400).html(
                                         obj);
                             });
@@ -107,7 +117,6 @@
                 }
             });
         });
-
     </script>
 
 @endsection

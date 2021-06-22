@@ -23,27 +23,28 @@ class DoctorRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->request->get('action')=='edit'){
-            $valid=array(
-                'name'	=> 'required',
-                'specialization'	=> 'required|',
-                'email'	=> 'required|email|unique:doctors,email,'.$this->request->get("id").',id',
+        if ($this->request->get('action') == 'edit') {
+            $valid = array(
+                'name'    => 'required|regex:/^[a-zA-ZÑñ\s]+$/',
+                'specialization'    => 'required|',
+                'email'    => 'required|email|unique:doctors,email,' . $this->request->get("id") . ',id',
             );
-        }else{
-            $valid=array(
-                'name'	=> 'required',
-                'email'	=> 'required|email|unique:doctors,email,NULL,id',
-                'specialization'	=> 'required|',
+        } else {
+            $valid = array(
+                'name'    => 'required|regex:/^[a-zA-ZÑñ\s]+$/',
+                'email'    => 'required|email|unique:doctors,email,NULL,id',
+                'specialization'    => 'required|',
             );
         }
         return $valid;
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
             'name.required'    => 'Doctor name is required',
             'email.required'    => 'Doctor email is required',
-            'email.unique'		=> 'Email is already exists',
+            'email.unique'        => 'Email is already exists',
             'specialization.required'    => 'Select specialization option',
         ];
     }

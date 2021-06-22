@@ -23,23 +23,24 @@ class InquiryRequest extends FormRequest
      */
     public function rules()
     {
-        
-        $valid=array(
-            'name'	=> 'required',
-            'email'	=> 'required|email|',
-            'contact_number'	=> 'required|',
-            'state'	=> 'required|',
-            'city'	=> 'required|',
-            'address'	=> 'required|',
-            'pincode'	=> 'required|',
-            'cancer_type'	=> 'required|',
-            'document'	=> 'required|max:10240',
+
+        $valid = array(
+            'name'    => 'required|regex:/^[a-zA-ZÑñ\s]+$/',
+            'email'    => 'required|email|',
+            'contact_number'    => 'required|',
+            'state'    => 'required|',
+            'city'    => 'required|',
+            'address'    => 'required|',
+            'pincode'    => 'required|',
+            'cancer_type'    => 'required|',
+            'document'    => 'required|max:10240',
         );
-        
+
         return $valid;
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
             'name.required'     => 'Name is required',
             'email.required'    => 'Email is required',

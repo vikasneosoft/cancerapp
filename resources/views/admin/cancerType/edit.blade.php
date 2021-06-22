@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin_dashboard') }}"> Dashboard</a></li>
                         <li class="breadcrumb-item active">Edit cancer type</li>
                     </ol>
                 </div>
@@ -47,46 +47,42 @@
 @section('admin-js')
     <script src="{{ asset('public/common/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('public/common/js/additional-methods.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $("#edit-form").validate({
                 rules: {
                     name: {
                         required: true,
+                        lettersonly: true
                     },
                 },
                 messages: {
                     name: {
-                        required: "Cancer type name is required"
+                        required: "Cancer type name is required",
+                        lettersonly: "Invalid name format"
                     },
                 },
                 errorElement: 'span',
-                errorClass: 'error_msg errormsges',
+                errorClass: 'error',
                 submitHandler: function(form) {
                     $.ajax({
                         dataType: 'json',
-                        method: 'post',
+                        method: 'PUT',
                         data: $('#edit-form').serialize(),
-                        url: "{{ route('admin.editCancerType') }}",
+                        url: "{{ route('cancer.update', '+id+') }}",
                         beforeSend: function() {
-                            $("#loadingImage").show();
+                            $("#loadingImage").css({
+                                "display": "block"
+                            });
                         },
                         success: function(data) {
-                            $("#loadingImage").hide();
-                            if (data.success == true) {
-                                window.location.href =
-                                    "{{ route('admin.getCancerTypes') }}";
-
-                            }
-                            if (data.success == false) {
-                                window.location.href =
-                                    "{{ route('admin.getCancerTypes') }}";
-
-                            }
+                            window.location.href =
+                                "{{ route('cancer.index') }}";
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
-                            $("#loadingImage").hide();
+                            $("#loadingImage").css({
+                                "display": "none"
+                            });
                             $.each(xhr.responseJSON.errors, function(i, obj) {
                                 $('input[name="' + i + '"]').closest('.form-group')
                                     .addClass('has-error');
@@ -99,7 +95,6 @@
                 }
             });
         });
-
     </script>
 
 @endsection

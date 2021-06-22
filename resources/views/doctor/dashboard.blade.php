@@ -57,7 +57,7 @@
                                                         <tr role="row" class="{{ $key }}">
                                                             <td class="sorting_1" tabindex="0">{{ $key + 1 }}</td>
                                                             <td><a
-                                                                    href="{{ route('doctor.getDetailInquiryById', ['id' => $value['id']]) }}">{{ $value['name'] }}</a>
+                                                                    href="{{ route('doctor.get_detail_inquiry_by_id', ['id' => $value['id']]) }}">{{ $value['name'] }}</a>
                                                             </td>
                                                             <td>{{ $value['email'] }}</td>
                                                             <td>{{ $value['contact_number'] }}</td>
@@ -97,60 +97,4 @@
 
 @endsection
 @section('doctor-js')
-    <script src="{{ asset('public/common/js/bootbox.min.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#example1').DataTable()
-            $(document).on("click", ".change-status", function() {
-                var id = $(this).attr('data-id');
-                var status = $(this).attr('data-status');
-                var token = "{{ csrf_token() }}";
-                bootbox.confirm("Are you sure you want to change the status?", function(result) {
-                    if (result) {
-                        $.ajax({
-                            url: '{{ route('admin.changeDoctorStatus') }}',
-                            type: "POST",
-                            data: {
-                                id: id,
-                                status: status,
-                                _token: token
-                            },
-                            beforeSend: function() {
-                                $("#loadingImage").show();
-                            },
-                            success: function(data) {
-                                $("#loadingImage").hide();
-                                location.reload();
-                            },
-                        });
-                    }
-                });
-            });
-            /** Delete Product **/
-            $(document).on("click", ".delete", function() {
-                var id = $(this).attr('data-id');
-                var token = "{{ csrf_token() }}";
-                bootbox.confirm("Are you sure you want to delete?", function(result) {
-                    if (result) {
-                        $.ajax({
-                            url: '{{ route('admin.deleteDoctor') }}',
-                            type: "POST",
-                            data: {
-                                id: id,
-                                _token: token
-                            },
-                            beforeSend: function() {
-                                $("#loadingImage").show();
-                            },
-                            success: function(data) {
-                                $("#loadingImage").hide();
-                                location.reload();
-                            },
-                        });
-                    }
-                });
-            });
-        });
-
-    </script>
 @endsection

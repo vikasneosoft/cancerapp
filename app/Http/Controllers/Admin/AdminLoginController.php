@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+
 class AdminLoginController extends Controller
 {
     use AuthenticatesUsers;
     protected $redirectTo = '/';
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('guest', ['except' => 'logout']);
     }
 
@@ -20,7 +22,8 @@ class AdminLoginController extends Controller
      *  load view for admin login
      *
      */
-    public function index(){
+    public function index()
+    {
         return view('admin.login');
     }
 
@@ -28,9 +31,10 @@ class AdminLoginController extends Controller
      *  if user is  for admin login
      *
      */
-    public function getAdminLogin(){
-        if (auth()->guard('admin')->user()){
-            return redirect()->route('admin.dashboard');
+    public function getAdminLogin()
+    {
+        if (auth()->guard('admin')->user()) {
+            return redirect()->route('admin_dashboard');
         } else {
             return view('admin.login');
         }
@@ -41,15 +45,16 @@ class AdminLoginController extends Controller
      * @param array
      * return view
      */
-    public function adminAuth(Request $request){
+    public function adminAuth(Request $request)
+    {
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-            return redirect()->route('admin.dashboard');
-        }else{
+            return redirect()->route('admin_dashboard');
+        } else {
             return redirect()->back()->with('error', 'Invalid username or password.');
         }
     }
@@ -58,7 +63,8 @@ class AdminLoginController extends Controller
      *  logout admin
      * return view
      */
-    public function adminlogout(){
+    public function adminlogout()
+    {
         Auth::guard('admin')->logout();
         return redirect('/admin/login');
     }

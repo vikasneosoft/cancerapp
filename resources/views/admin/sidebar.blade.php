@@ -6,10 +6,7 @@
               src="{{ asset('public/admin/img/AdminLTELogo.png') }}">
           <span class="brand-text font-weight-light">AdminLTE 3</span>
       </a>
-
-      <!-- Sidebar -->
       <div class="sidebar">
-          <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
                   <img alt="User Image" class="img-circle elevation-2"
@@ -20,44 +17,37 @@
                       <?php echo Auth::guard('admin')->user()->name; ?> </a>
               </div>
           </div>
-
           <!-- Sidebar Menu -->
           <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                   data-accordion="false">
-                  <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+
                   <li class="nav-item ">
-                      <a href="{{ route('admin.dashboard') }}" class="nav-link @if (isset($active) && $active=='dashboard' ) active @endif">
+                      <a href="{{ route('admin_dashboard') }}" class="nav-link @if (isset($active) && $active=='dashboard' ) active @endif">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
                               Dashboard
                           </p>
                       </a>
                   </li>
-
-
-
                   <li class="nav-item ">
-                      <a href="{{ route('admin.getCancerTypes') }}" class="nav-link @if (isset($active) && $active=='cancerType' ) active @endif">
+                      <a href="{{ route('cancer.index') }}" class="nav-link @if (isset($active)
+                          && $active=='cancerType' ) active @endif">
                           <i class="nav-icon fas fa-tree"></i>
                           <p>
                               Cancer Types
                           </p>
                       </a>
                   </li>
-
                   <li class="nav-item ">
-                      <a href="{{ route('admin.getDoctors') }}" class="nav-link @if (isset($active) && $active=='doctor' ) active @endif">
+                      <a href="{{ route('doctors.index') }}" class="nav-link @if (isset($active)
+                          && $active=='doctor' ) active @endif">
                           <i class="nav-icon fas fa-tree"></i>
                           <p>
                               Manage Doctors
                           </p>
                       </a>
                   </li>
-
-
-
               </ul>
           </nav>
       </div>

@@ -8,10 +8,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CancerController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
 
 /* Patient */
+
 use App\Http\Controllers\Patient\InquireController;
 
 /* Doctor */
@@ -20,46 +19,31 @@ use App\Http\Controllers\Doctor\DoctorLoginController;
 use App\Http\Controllers\Doctor\DoctorDashboardController;
 
 Route::get('/', [HomeController::class, 'index'])->name('homePage');
-Route::post('/addInquiry', [InquireController::class, 'addInquiry'])->name('addInquiry');
+Route::post('/add-inquiry', [InquireController::class, 'addInquiry'])->name('add_inquiry');
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/doctor/login', [DoctorLoginController::class, 'loginView'])->name('doctorLogin');
-    Route::post('/doctor/login', [DoctorLoginController::class, 'doctorAuth'])->name('doctorAuth');
-    Route::any('/doctor/logout', [DoctorLoginController::class, 'doctorLogout'])->name('doctorLogout');
+    Route::get('/doctor/login', [DoctorLoginController::class, 'loginView'])->name('doctor_login');
+    Route::post('/doctor/login', [DoctorLoginController::class, 'doctorAuth'])->name('doctor_auth');
+    Route::any('/doctor-logout', [DoctorLoginController::class, 'doctorLogout'])->name('doctor_logout');
 
-    Route::get('/admin/login', [AdminLoginController::class, 'getAdminLogin'])->name('adminLogin');
-    Route::post('admin/login', [AdminLoginController::class, 'adminAuth'])->name('admin.auth');
-    Route::any('adminlogout', [AdminLoginController::class, 'adminlogout'])->name('adminLogout');
+    Route::get('/admin/login', [AdminLoginController::class, 'getAdminLogin'])->name('admin_login');
+    Route::post('admin/login', [AdminLoginController::class, 'adminAuth'])->name('admin_auth');
+    Route::any('admin-logout', [AdminLoginController::class, 'adminlogout'])->name('admin_logout');
     Route::group(['middleware' => ['admin'], 'prefix' => 'admin'], function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-       
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
         /* Cancer Type*/
-        Route::get('/getCancerTypes', [CancerController::class, 'getCancerTypes'])->name('admin.getCancerTypes');
-        Route::get('/viewAddCancerType', [CancerController::class, 'viewAddCancerType'])->name('admin.viewAddCancerType');
-        Route::post('/addCancerType', [CancerController::class, 'addCancerType'])->name('admin.addCancerType');
-        Route::get('/viewEditCancerType/{id}', [CancerController::class, 'viewEditCancerType'])->name('admin.viewEditCancerType');
-        Route::post('/editCancerType', [CancerController::class, 'editCancerType'])->name('admin.editCancerType');
-        Route::post('/changeStatus', [CancerController::class, 'changeStatus'])->name('admin.changeStatus');
-        Route::post('/deleteCancerType', [CancerController::class, 'deleteCancerType'])->name('admin.deleteCancerType');
+        Route::resource('cancer', CancerController::class);
+        Route::post('/change-status', [CancerController::class, 'changeStatus'])->name('admin.change_status');
 
         /* Doctor Routes */
-        Route::get('/getDoctors', [DoctorController::class, 'getDoctors'])->name('admin.getDoctors');
-        Route::get('/viewAddDoctor', [DoctorController::class, 'viewAddDoctor'])->name('admin.viewAddDoctor');
-        Route::post('/addDoctor', [DoctorController::class, 'addDoctor'])->name('admin.addDoctor');
-        Route::get('/viewEditDoctor/{id}', [DoctorController::class, 'viewEditDoctor'])->name('admin.viewEditDoctor');
-        Route::post('/editDoctor', [DoctorController::class, 'editDoctor'])->name('admin.editDoctor');
-        Route::post('/changeDoctorStatus', [DoctorController::class, 'changeDoctorStatus'])->name('admin.changeDoctorStatus');
-        Route::post('/deleteDoctor', [DoctorController::class, 'deleteDoctor'])->name('admin.deleteDoctor');
-        Route::post('/changeDoctorPassword', [DoctorController::class, 'changeDoctorPassword'])->name('admin.changeDoctorPassword');
-
+        Route::resource('doctors', DoctorController::class);
+        Route::post('/change-doctor-status', [DoctorController::class, 'changeDoctorStatus'])->name('admin.change_doctor_status');
     });
-    
-    Route::group(['middleware' => ['doctor'],'prefix' => 'doctor'], function () {
+
+    Route::group(['middleware' => ['doctor'], 'prefix' => 'doctor'], function () {
         Route::get('/dashboard', [DoctorDashboardController::class, 'dashboard'])->name('doctor.dashboard');
-        Route::get('/view-inquery/{id}', [DoctorDashboardController::class, 'getDetailInquiryById'])->name('doctor.getDetailInquiryById');
-        Route::post('/addPlan', [DoctorDashboardController::class, 'addPlan'])->name('doctor.addPlan');
-        Route::get('/addPlan/{id}', [DoctorDashboardController::class, 'printPlan'])->name('doctor.printPlan');
+        Route::get('/view-inquery/{id}', [DoctorDashboardController::class, 'getDetailInquiryById'])->name('doctor.get_detail_inquiry_by_id');
+        Route::post('/add-plan', [DoctorDashboardController::class, 'addPlan'])->name('doctor.add_plan');
+        Route::get('/add-plan/{id}', [DoctorDashboardController::class, 'printPlan'])->name('doctor.print_plan');
     });
-
-  
 });

@@ -17,7 +17,7 @@
                 <h1>Cancer inquiry</h1>
                 @include('flash::message')
                 <hr>
-                <input type="hidden" id="add-inquery-route" value="{{ route('addInquiry') }}">
+                <input type="hidden" id="add-inquery-route" value="{{ route('add_inquiry') }}">
                 {{ Form::open(['id' => 'add-inquery', 'file' => true]) }}
                 <div class="form-group">
                     {{ Form::label('name', 'Name: ') }}

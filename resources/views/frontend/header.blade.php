@@ -26,7 +26,7 @@
 
 <body>
     <div id="loadingImage" style="display:none">
-        <img src="{{ asset('public/images/ajax-loader.svg') }}">
+        <img src="{{ asset('public/images/ajax-loader.gif') }}">
     </div>
 
     <header class="header mb-5">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-lg-6 text-center text-lg-right">
                         <ul class="menu list-inline mb-0">
-                            <li class="list-inline-item"><a href="{{ route('doctorLogin') }}"
+                            <li class="list-inline-item"><a href="{{ route('doctor_login') }}"
                                     data-target="#login-modal">Login</a></li>
 
 

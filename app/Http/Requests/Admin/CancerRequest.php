@@ -23,22 +23,23 @@ class CancerRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->request->get('action')=='edit'){
-            $valid=array(
-                'name'	=> 'required|unique:cancer_types,name,'.$this->request->get("id").',id',
+        if ($this->request->get('action') == 'edit') {
+            $valid = array(
+                'name'    => 'required|regex:/^[a-zA-ZÑñ\s]+$/|unique:cancer_types,name,' . $this->request->get("id") . ',id',
             );
-        }else{
-            $valid=array(
-                'name'	=> 'required|unique:cancer_types,name,NULL,id',
+        } else {
+            $valid = array(
+                'name'    => 'required|regex:/^[a-zA-ZÑñ\s]+$/|unique:cancer_types,name,NULL,id',
             );
         }
         return $valid;
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
             'name.required'    => 'Cancer type name is required',
-            'name.unique'		=> 'Cancer type name already exists'
+            'name.unique'        => 'Cancer type name already exists'
         ];
     }
 }

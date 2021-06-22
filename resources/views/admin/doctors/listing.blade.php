@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
+                            <li class="breadcrumb-item"><a href="{{ route('admin_dashboard') }}"><i
                                         class="fa fa-dashboard"></i> Dashboard</a></li>
                             <li class="breadcrumb-item active">Doctors</li>
                         </ol>
@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="{{ route('admin.viewAddDoctor') }}" class="btn btn-block btn-primary">Add</a>
+                                    <a href="{{ route('doctors.create') }}" class="btn btn-block btn-primary">Add</a>
                                 </h3>
                             </div>
 
@@ -61,7 +61,7 @@
                                                         <tr role="row" class="{{ $key }}">
                                                             <td class="sorting_1" tabindex="0">{{ $key + 1 }}</td>
                                                             <td><a
-                                                                    href="{{ route('admin.viewEditDoctor', ['id' => $value['id']]) }}">{{ $value['name'] }}</a>
+                                                                    href="{{ route('doctors.update', $value['id']) }}">{{ $value['name'] }}</a>
                                                             </td>
                                                             <td>{{ $value['email'] }}</td>
                                                             <td>
@@ -92,10 +92,11 @@
                                                                         </button>
                                                                         <ul class="dropdown-menu">
                                                                             <li><a class="dropdown-item"
-                                                                                    href="{{ route('admin.viewEditDoctor', ['id' => $value['id']]) }}">Edit</a>
+                                                                                    href="{{ route('doctors.update', $value['id']) }}">Edit</a>
                                                                             </li>
                                                                             <li class="divider"></li>
-                                                                            <li><a class="delete dropdown-item" href="#"
+                                                                            <li>
+                                                                                <a class="delete dropdown-item" href="#"
                                                                                     data-id="{{ $value['id'] }}">Delete</a>
                                                                             </li>
                                                                             <li class="divider"></li>
@@ -126,29 +127,27 @@
         $(document).ready(function() {
 
             $('#example1').DataTable()
-
-
-
-
             $(document).on("click", ".change-status", function() {
                 var id = $(this).attr('data-id');
                 var status = $(this).attr('data-status');
-                var token = "{{ csrf_token() }}";
                 bootbox.confirm("Are you sure you want to change the status?", function(result) {
                     if (result) {
                         $.ajax({
-                            url: '{{ route('admin.changeDoctorStatus') }}',
+                            url: '{{ route('admin.change_doctor_status') }}',
                             type: "POST",
                             data: {
                                 id: id,
                                 status: status,
-                                _token: token
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
-                                $("#loadingImage").show();
+                                $("#loadingImage").css({
+                                    "display": "block"
+                                });
                             },
                             success: function(data) {
-                                $("#loadingImage").hide();
                                 location.reload();
                             },
                         });
@@ -157,22 +156,25 @@
             });
             /** Delete Product **/
             $(document).on("click", ".delete", function() {
-                var id = $(this).attr('data-id');
-                var token = "{{ csrf_token() }}";
+                let id = $(this).attr('data-id');
+
                 bootbox.confirm("Are you sure you want to delete?", function(result) {
                     if (result) {
                         $.ajax({
-                            url: '{{ route('admin.deleteDoctor') }}',
-                            type: "POST",
+                            url: "{{ route('doctors.destroy', '+id+') }}",
+                            type: "DELETE",
                             data: {
                                 id: id,
-                                _token: token
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
-                                $("#loadingImage").show();
+                                $("#loadingImage").css({
+                                    "display": "block"
+                                });
                             },
                             success: function(data) {
-                                $("#loadingImage").hide();
                                 location.reload();
                             },
                         });
@@ -180,6 +182,5 @@
                 });
             });
         });
-
     </script>
 @endsection

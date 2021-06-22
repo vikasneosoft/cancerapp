@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\CancerRequest;
@@ -14,9 +15,10 @@ class CancerController extends Controller
      *
      * @return array
      */
-    public function getCancerTypes(){
+    public function index()
+    {
         $cancerTypes =  (new CancerModel)->getCancerTypes()->toArray();
-        return view( 'admin.cancerType.listing',['cancerTypes' => $cancerTypes,'active' => 'cancerType'] );
+        return view('admin.cancerType.listing', ['cancerTypes' => $cancerTypes, 'active' => 'cancerType']);
     }
 
     /**
@@ -24,26 +26,28 @@ class CancerController extends Controller
      *
      * @return view
      */
-    public function viewAddCancerType(){
-        return view( 'admin.cancerType.add',['active' => 'cancerType'] );
+    public function create()
+    {
+        return view('admin.cancerType.add', ['active' => 'cancerType']);
     }
 
-     /**
+    /**
      * Store new Cancer type
      *
      * @param  array  $inputs
      * @return objectId
      */
-    public function addCancerType(CancerRequest $request){
+    public function store(CancerRequest $request)
+    {
         $inputs = $request->all();
         unset($inputs['_token']);
         $objId = (new CancerModel())->addCancerType($inputs);
-        if( $objId ){
-            flash()->success( 'Added successfully' );
-            return response()->json( ['success' => true ] );
+        if ($objId) {
+            flash()->success('Added successfully');
+            return response()->json(['success' => true]);
         }
         flash()->error('Something went wrong');
-        return response()->json( ['success' => false ] );
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -52,9 +56,10 @@ class CancerController extends Controller
      * @param  $id
      * @return view
      */
-    public function viewEditCancerType($id){
+    public function show($id)
+    {
         $cancerType = (new CancerModel())->getCancerTypeById($id);
-        return view( 'admin.cancerType.edit',['cancerType' => $cancerType,'active' => 'cancerType'] );
+        return view('admin.cancerType.edit', ['cancerType' => $cancerType, 'active' => 'cancerType']);
     }
 
     /**
@@ -63,15 +68,16 @@ class CancerController extends Controller
      * @param  array  $inputs
      * @return objectId
      */
-    public function editCancerType(CancerRequest $request){
+    public function update(CancerRequest $request)
+    {
         $inputs = $request->all();
         $objId = (new CancerModel())->updateCancerType($inputs);
-        if( $objId ){
-            flash()->success( 'Updated successfully' );
-            return response()->json( ['success' => true ] );
+        if ($objId) {
+            flash()->success('Updated successfully');
+            return response()->json(['success' => true]);
         }
         flash()->error('Something went wrong');
-        return response()->json( ['success' => false ] );
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -80,15 +86,16 @@ class CancerController extends Controller
      * @param array
      * @return true||false
      */
-    public function changeStatus(Request $request){
+    public function changeStatus(Request $request)
+    {
         $inputs = $request->all();
         $objId = (new CancerModel())->updateCancerType($inputs);
-        if( $objId ){
-            flash()->success( 'Status changed successfully' );
-            return response()->json( ['success' => true ] );
+        if ($objId) {
+            flash()->success('Status changed successfully');
+            return response()->json(['success' => true]);
         }
         flash()->error('Something went wrong');
-        return response()->json( ['success' => false] );
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -97,14 +104,15 @@ class CancerController extends Controller
      * @param id
      * @return true||false
      */
-    public function deleteCancerType(Request $request){
+    public function destroy(Request $request)
+    {
         $objId = (new CancerModel())->deleteCancerType($request->id);
-        if($objId){
-            flash()->success( 'Deleted successfully' );
-            return response()->json(['success'=>true ]);
-        } else{
+        if ($objId) {
+            flash()->success('Deleted successfully');
+            return response()->json(['success' => true]);
+        } else {
             flash()->error('Something went wrong');
-            return response()->json( ['success' => false] );
+            return response()->json(['success' => false]);
         }
     }
 }

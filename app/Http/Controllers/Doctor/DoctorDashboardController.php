@@ -9,21 +9,22 @@ use App\Http\Requests\Doctor\PlanGenerationRequest;
 use App\Models\DoctorModel;
 use App\Models\CancerInquiryModel;
 use App\Models\InquiryPlanModel;
-use App\Repository\CommonRepository;
 use Auth;
 use PDF;
 use Mail;
 use Config;
+
 class DoctorDashboardController extends Controller
 {
-     /**
+    /**
      * redirect to doctor dashboard.
      *
      *@param array
      */
-    public function dashboard(){
+    public function dashboard()
+    {
         $inquries =  (new CancerInquiryModel)->getCancerInquiriesByType(Auth::guard('doctor')->user()->specialization)->toArray();
-        return view('doctor.dashboard', [ 'inquries' =>$inquries,'active' => 'dashboard' ]);
+        return view('doctor.dashboard', ['inquries' => $inquries, 'active' => 'dashboard']);
     }
 
     /**
@@ -32,15 +33,16 @@ class DoctorDashboardController extends Controller
      *@param array
      */
 
-    public function getDetailInquiryById($id){
+    public function getDetailInquiryById($id)
+    {
         $inquiry =  (new CancerInquiryModel)->getCancerInquiryById($id)->toArray();
         $inquiryPlan =  (new InquiryPlanModel)->getPlanByInquiryId($id);
-        if(isset($inquiryPlan->doctor_id)){
-            if($inquiryPlan->doctor_id!=Auth::guard('doctor')->user()->id){
+        if (isset($inquiryPlan->doctor_id)) {
+            if ($inquiryPlan->doctor_id != Auth::guard('doctor')->user()->id) {
                 return redirect()->route('doctor.dashboard')->with('message', 'There is already plan for this inquery');
-            }   
+            }
         }
-        return view('doctor.inqueryDetail', [ 'inquiry' =>$inquiry,'active' => 'dashboard' ]);
+        return view('doctor.inqueryDetail', ['inquiry' => $inquiry, 'active' => 'dashboard']);
     }
 
     /**
@@ -48,20 +50,21 @@ class DoctorDashboardController extends Controller
      *
      *@param array
      */
-    public function addPlan(PlanGenerationRequest $request,CommonRepository $common){
+    public function addPlan(PlanGenerationRequest $request)
+    {
         $inputs  = $request->all();
-        $inputs['doctor_id']=Auth::guard('doctor')->user()->id;
-        $inputs['plan']=$inputs['content'];
+        $inputs['doctor_id'] = Auth::guard('doctor')->user()->id;
+        $inputs['plan'] = $inputs['content'];
         unset($inputs['_token']);
         $objId =  (new InquiryPlanModel)->add($inputs);
-        CancerInquiryModel::where(array('id'=>$inputs['cancer_inquiry_id']))->update(array('status'=>1));
-        if( $objId ){
-            $common->sendPlanToPatient($inputs['email'],$inputs['name'],$inputs['content']);
-            flash()->success( 'Added successfully' );
-            return response()->json( ['success' => true ] );
+        CancerInquiryModel::where(array('id' => $inputs['cancer_inquiry_id']))->update(array('status' => 1));
+        if ($objId) {
+            sendPlanToPatient($inputs['email'], $inputs['name'], $inputs['content']);
+            flash()->success('Added successfully');
+            return response()->json(['success' => true]);
         }
         flash()->error('Something went wrong');
-        return response()->json( ['success' => false ] );
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -69,7 +72,8 @@ class DoctorDashboardController extends Controller
      *
      *@param id
      */
-    public function printPlan($id){
+    public function printPlan($id)
+    {
         $inquiryPlan =  (new InquiryPlanModel)->getPlanById($id);
         $data["body"] = $inquiryPlan->plan;
         $pdf = PDF::loadView('doctor.pdfs.printPlan', $data);

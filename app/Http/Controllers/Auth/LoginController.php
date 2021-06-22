@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Frontend\LoginRequest;
 use App\Models\User;
 use Auth;
+
 class LoginController extends Controller
 {
     /*
@@ -31,19 +32,8 @@ class LoginController extends Controller
      */
     //protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-   /*  public function __construct()
+    public function patientLogin(LoginRequest $request)
     {
-        $this->middleware('guest')->except('logout');
-    } */
-
-   
-   
-    public function patientLogin(LoginRequest $request){
         $inputs = $request->all();
         $auth = Auth::attempt(
             [
@@ -51,11 +41,11 @@ class LoginController extends Controller
                 'password'  => $request->get('password')
             ]
         );
-        if($auth){
+        if ($auth) {
             $status = 1;
-        }else{
+        } else {
             $status = 2;
         }
-        return response()->json($status); 
+        return response()->json($status);
     }
 }

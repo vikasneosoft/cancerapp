@@ -37,7 +37,7 @@
                     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
                         style="left: 0px; right: inherit;">
 
-                        <li><a href="{{ route('doctorLogout') }}" class="dropdown-item">Logout</a></li>
+                        <li><a href="{{ route('doctor_logout') }}" class="dropdown-item">Logout</a></li>
                     </ul>
                 </li>
             </ul>

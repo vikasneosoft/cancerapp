@@ -27,7 +27,7 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <a href="{{ route('admin.getCancerTypes') }}" class="btn btn-primary">Cancel</a>
+                    <a href="{{ route('cancer.index') }}" class="btn btn-primary">Cancel</a>
                 </div>
             </div>
         </div>

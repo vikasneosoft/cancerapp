@@ -38,7 +38,7 @@
                     <address>
                         @if (isset($inquiry['plans']) && !empty($inquiry['plans']))
                             @foreach ($inquiry['plans'] as $key => $value)
-                                <a href="{{ route('doctor.printPlan', ['id' => $value['id']]) }}">Plan -
+                                <a href="{{ route('doctor.print_plan', ['id' => $value['id']]) }}">Plan -
                                     {{ $key + 1 }}</a>
 
                             @endforeach
@@ -88,7 +88,6 @@
             filebrowserUploadUrl: '/public/ckeditor/kcfinder/upload.php?opener=TESTckeditor&type=files',
             filebrowserImageUploadUrl: '/public/ckeditor/kcfinder/upload.php?opener=REstckeditor&type=images'
         });
-
     </script>
     <script>
         $(document).ready(function() {
@@ -113,7 +112,7 @@
                         dataType: 'json',
                         method: 'post',
                         data: $('#add-form').serialize(),
-                        url: "{{ route('doctor.addPlan') }}",
+                        url: "{{ route('doctor.add_plan') }}",
                         beforeSend: function() {
                             $("#loadingImage").css("display", "block");
                         },
@@ -136,7 +135,6 @@
                 }
             });
         });
-
     </script>
 
 @endsection
